@@ -231,8 +231,8 @@ def main():
     #Below you need to have *each customer instance* try the four cases
     #case 1: the cashier does not have the stall 
     cust_1.validate_order(cashier_1, 'Baked goods', 'cupcakes', 30)
-    cust_2.validate_order(cashier_1, 'Baked goods', 'cupcakes', 40)
-    cust_3.validate_order(cashier_1, 'Baked goods', 'cupcakes', 50)
+    cust_2.validate_order(cashier_1, 'Breads', 'multigrain', 40)
+    cust_3.validate_order(cashier_1, 'Cheese', 'brie', 50)
 
     #case 2: the casher has the stall, but not enough ordered name or the ordered name item
     cust_1.validate_order(cashier_2, stall_1, 'lemons', 40)
