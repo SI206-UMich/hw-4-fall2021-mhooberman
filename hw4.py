@@ -12,6 +12,7 @@ class Customer:
     # Reload some deposit into the customer's wallet.
     def reload_money(self,deposit):
         self.wallet += deposit
+        return self.wallet
 
     # The customer orders the name and there could be different cases   
     def validate_order(self, cashier, stall, item_name, quantity):
@@ -83,7 +84,7 @@ class Stall:
         if self.has_item(name,quantity):
             self.inventory[name] -= quantity
         else:
-            return "The stall does not have enough name in the inventory to fit this quantity. The inventory is now " + str(self.inventory - quantity) + "!"
+            return "The stall does not have enough " + name + " in the inventory to fit this quantity. The inventory is now " + str(self.inventory - quantity) + "!"
 
     def has_item(self, name, quantity):
         if name in self.inventory:
@@ -198,15 +199,16 @@ class TestAllMethods(unittest.TestCase):
 	# Test validate order
     def test_validate_order(self):
 		# case 1: test if a customer doesn't have enough money in their wallet to order
-
+        self.assertFalse(self.f1.validate_order(self.c1, self.s1, "Taco", 20))
 		# case 2: test if the stall doesn't have enough name left in stock
-
+        self.assertFalse(self.f1.validate_order(self.c1, self.s1, "Taco", 100))
 		# case 3: check if the cashier can order item from that stall
-        pass
+        self.assertEqual(self.f1.validate_order(self.c1, self.s1, "Taco", 3), None)
+
 
     # Test if a customer can add money to their wallet
     def test_reload_money(self):
-        pass
+        self.assertEqual(self.f2.reload_money(50), 200)
     
 ### Write main function
 def main():
@@ -229,23 +231,23 @@ def main():
     #Below you need to have *each customer instance* try the four cases
     #case 1: the cashier does not have the stall 
     cust_1.validate_order(cashier_1, 'Baked goods', 'cupcakes', 30)
-    cust_2.validate_order(cashier_1, 'Baked goods', 'cupcakes', 30)
-    cust_3.validate_order(cashier_1, 'Baked goods', 'cupcakes', 30)
+    cust_2.validate_order(cashier_1, 'Baked goods', 'cupcakes', 40)
+    cust_3.validate_order(cashier_1, 'Baked goods', 'cupcakes', 50)
 
     #case 2: the casher has the stall, but not enough ordered name or the ordered name item
-    cust_1.validate_order(cashier_2, 'Fruits', 'oranges', 50)
-    cust_2.validate_order(cashier_2, 'Fruits', 'oranges', 50)
-    cust_3.validate_order(cashier_2, 'Fruits', 'oranges', 50)
+    cust_1.validate_order(cashier_2, stall_1, 'lemons', 40)
+    cust_2.validate_order(cashier_2, stall_1, 'apples', 50)
+    cust_3.validate_order(cashier_2, stall_2, 'cucumbers', 60)
 
     #case 3: the customer does not have enough money to pay for the order: 
-    cust_1.validate_order(cashier_1, 'Vegetables', 'cucumbers', 10)
-    cust_2.validate_order(cashier_1, 'Vegetables', 'cucumbers', 10)
-    cust_3.validate_order(cashier_1, 'Vegetables', 'cucumbers', 10)
+    cust_1.validate_order(cashier_1, stall_2, 'cucumbers', 15)
+    cust_2.validate_order(cashier_1, stall_1, 'apples', 25)
+    cust_3.validate_order(cashier_1, stall_2, 'carrots', 20)
 
     #case 4: the customer successfully places an order
-    cust_1.validate_order(cashier_2, 'Fruits', 'peaches', 10)
-    cust_2.validate_order(cashier_2, 'Fruits', 'peaches', 10)
-    cust_3.validate_order(cashier_2, 'Fruits', 'peaches', 10)
+    cust_1.validate_order(cashier_2, stall_1, 'peaches', 2)
+    cust_2.validate_order(cashier_2, stall_2, 'broccoli stalks', 3)
+    cust_3.validate_order(cashier_2, stall_1, 'lemons', 5)
 
 if __name__ == "__main__":
 	main()
